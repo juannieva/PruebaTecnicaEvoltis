@@ -5,6 +5,15 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./layout/admin-layout/admin-routing.module').then(m => m.AdminRoutingModule)
+  },
+  {
+    path: '',
+    redirectTo: 'admin',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'admin',
   },];
 
 @NgModule({
