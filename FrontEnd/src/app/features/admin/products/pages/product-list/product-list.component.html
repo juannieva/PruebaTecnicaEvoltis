@@ -1,0 +1,130 @@
+<form
+  *ngIf="filterForm$ | async as form"
+  [ngrxFormState]="form"
+  (ngSubmit)="onApplyFilters(form)"
+  ngrxForm
+  class="grid p-fluid gap-4"
+>
+
+  <div class="col-12 md:col-4">
+    <label for="search" class="block mb-2 font-semibold">Buscar</label>
+    <input
+      id="search"
+      type="text"
+      pInputText
+      *ngIf="form.controls.search as search"
+      [ngrxFormControlState]="search"
+      class="w-full"
+    />
+  </div>
+
+  <div class="col-12 md:col-4">
+    <label for="brand" class="block mb-2 font-semibold">Marca</label>
+    <p-dropdown
+      id="brand"
+      [options]="(brands$ | async) ?? []"
+      optionLabel="name"
+      optionValue="id"
+      placeholder="Todas"
+      [showClear]="true"
+      *ngIf="form.controls.brandId as brandId"
+      [ngrxFormControlState]="brandId"
+      class="w-full"
+    ></p-dropdown>
+  </div>
+
+  <div class="col-12 md:col-4">
+    <label for="category" class="block mb-2 font-semibold">Categoría</label>
+    <p-dropdown
+      id="category"
+      [options]="(categories$ | async) ?? []"
+      optionLabel="name"
+      optionValue="id"
+      placeholder="Todas"
+      [showClear]="true"
+      *ngIf="form.controls.categoryId as categoryId"
+      [ngrxFormControlState]="categoryId"
+      class="w-full"
+    ></p-dropdown>
+  </div>
+
+  <div class="col-12 md:col-4">
+    <label for="minPrice" class="block mb-2 font-semibold">Precio Mínimo</label>
+    <p-inputNumber
+      id="minPrice"
+      *ngIf="form.controls.minPrice as minPrice"
+      [ngrxFormControlState]="minPrice"
+      class="w-full"
+      inputId="minPrice"
+    ></p-inputNumber>
+  </div>
+
+  <div class="col-12 md:col-4">
+    <label for="maxPrice" class="block mb-2 font-semibold">Precio Máximo</label>
+    <p-inputNumber
+      id="maxPrice"
+      *ngIf="form.controls.maxPrice as maxPrice"
+      [ngrxFormControlState]="maxPrice"
+      class="w-full"
+      inputId="maxPrice"
+    ></p-inputNumber>
+  </div>
+
+  <div class="col-12 md:col-4 flex align-items-end justify-content-end gap-2">
+    <button pButton type="submit" label="Aplicar filtros" class="p-button-primary w-full md:w-auto"></button>
+    <button
+      pButton
+      type="button"
+      class="p-button-secondary w-full md:w-auto"
+      label="Limpiar"
+    ></button>
+  </div>
+
+</form>
+<p-table
+  [value]="(products$ | async) || []"
+  [paginator]="true"
+  [rows]="10"
+  [loading]="(loading$ | async) || false"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} productos"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Imagen</th>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Stock</th>
+      <th>Acciones</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td>
+        <img [src]="product.image" alt="Imagen" style="width: 50px; height: 50px;" />
+      </td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.price }}</td>
+      <td>{{ product.stock }}</td>
+      <td>
+        <p-button label="Editar" (click)="onEdit(product)"></p-button>
+        <button pButton type="button" label="Eliminar" class="p-button-danger" (click)="onDelete(product)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-button label="Crear nuevo" (click)="onCreate()"></p-button>
+
+<p-dialog [(visible)]="displayDialog" [modal]="true" (onHide)="onDialogClose()">
+  <ng-template pTemplate="header">
+    {{ selectedProduct ? 'Editar Producto' : 'Crear Producto' }}
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <app-product-form
+      [product]="selectedProduct"
+      (closeDialog)="onDialogClose()"
+    ></app-product-form>
+  </ng-template>
+</p-dialog>

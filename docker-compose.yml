@@ -1,0 +1,47 @@
+services:
+  databaseptevo:                               
+    image: mysql:8.0
+    container_name: databaseptevo             
+    environment:
+      MYSQL_ROOT_PASSWORD: TuPasswordSegura123!
+      MYSQL_DATABASE: PruebaTecnicaEvoltis
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: TuPasswordSegura123!
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+
+  backendptevo:                                
+    build:
+      context: ./Backend
+      dockerfile: PruebaTecnicaEvoltis.Api/Dockerfile
+    container_name: backendptevo
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+    ports:
+      - "5000:8080"
+    depends_on:
+      - databaseptevo
+    volumes:
+      - ./Backend:/src      
+
+  frontendptevo:                               
+    image: node:18.16.0-alpine
+    container_name: frontendptevo
+    working_dir: /app
+    volumes:
+      - ./FrontEnd:/app
+      - /app/node_modules
+    ports:
+      - "4200:4200"
+    command: sh -c "npm install && npx ng serve --host 0.0.0.0 --port 4200"
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on:
+      - backendptevo
+
+volumes:
+  dbdata: {}           

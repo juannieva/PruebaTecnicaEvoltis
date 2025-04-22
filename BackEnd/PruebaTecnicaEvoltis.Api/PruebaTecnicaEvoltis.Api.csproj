@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>true</InvariantGlobalization>
+	<!-- Con esto se habilita la documentacion por defecto para que la use Swagger -->
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	<!-- Esto le indica al IDE que no nos pida documentacion en todas las clases/metodos solo donde queremos documentar (desactivar advertencia) -->
+	<NoWarn>$(NoWarn);1591</NoWarn>
+	<UserSecretsId>80da2058-7d77-4b18-a8d4-15b5dc5b5170</UserSecretsId>
+	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PruebaTecnicaEvoltis.Entities\PruebaTecnicaEvoltis.Entities.csproj" />
+    <ProjectReference Include="..\PruebaTecnicaEvoltis.Services\PruebaTecnicaEvoltis.Services.csproj" />
+  </ItemGroup>
+
+</Project>

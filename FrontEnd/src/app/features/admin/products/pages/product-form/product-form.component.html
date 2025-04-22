@@ -1,0 +1,110 @@
+<form
+  *ngIf="formState$ | async as formState"
+  [ngrxFormState]="formState"
+  (submit)="onSubmit()"
+  ngrxForm
+>
+  <div class="p-fluid">
+    <div>
+      <label for="name">Nombre</label>
+      <input
+        id="name"
+        pInputText
+        [ngrxFormControlState]="formState.controls.name"
+
+      />
+      <div *ngIf="formState.controls.name.isTouched && formState.controls.name.errors">
+        <small class="p-error" *ngIf="formState.controls.name.errors.required">
+          El nombre es obligatorio.
+        </small>
+        <small class="p-error" *ngIf="formState.controls.name.errors.minLength">
+          El nombre debe tener al menos 3 caracteres.
+        </small>
+      </div>
+    </div>
+
+    <div class="p-field">
+      <label for="price">Precio</label>
+      <p-inputNumber
+        id="price"
+        mode="decimal"
+        [minFractionDigits]="2"
+        [maxFractionDigits]="5"
+        [ngrxFormControlState]="formState.controls.price"
+      />
+
+    </div>
+
+    <div class="p-field">
+      <label for="stock">Stock</label>
+      <p-inputNumber
+        id="stock"
+        [ngrxFormControlState]="formState.controls.stock"
+      />
+      <small class="p-error" *ngIf="formState.controls.stock.isTouched && formState.controls.stock.errors?.required">
+        El stock es obligatorio.
+      </small>
+    </div>
+
+    <div class="p-field">
+      <label for="description">Descripción</label>
+      <textarea
+        id="description"
+        pInputTextarea
+        rows="5"
+        [style.resize]="'none'"
+        [ngrxFormControlState]="formState.controls.description"
+      ></textarea>
+      <small class="p-error" *ngIf="formState.controls.description.isTouched && formState.controls.description.errors?.required">
+        La descripción es obligatoria.
+      </small>
+    </div>
+
+    <div class="p-field">
+      <label for="image">URL de Imagen</label>
+      <input
+        id="image"
+        pInputText
+        [ngrxFormControlState]="formState.controls.imageUrl"
+      />
+      <small class="p-error" *ngIf="formState.controls.imageUrl.isTouched && formState.controls.imageUrl.errors?.required">
+        La URL de la imagen es obligatoria.
+      </small>
+    </div>
+
+    <div class="p-field">
+      <label for="brand">Marca</label>
+      <p-dropdown
+        id="brand"
+        [options]="(brands$ | async) || []"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Seleccione una marca"
+        [ngrxFormControlState]="formState.controls.brandId"
+      ></p-dropdown>
+      <small class="p-error" *ngIf="formState.controls.brandId.isTouched && formState.controls.brandId.errors?.required">
+        La marca es obligatoria.
+      </small>
+    </div>
+
+    <div class="p-field">
+      <label for="category">Categoría</label>
+      <p-dropdown
+        id="category"
+        [options]="(categories$ | async) || []"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Seleccione una categoría"
+        [ngrxFormControlState]="formState.controls.categoryId"
+      ></p-dropdown>
+      <small class="p-error" *ngIf="formState.controls.categoryId.isTouched && formState.controls.categoryId.errors?.required">
+        La categoría es obligatoria.
+      </small>
+    </div>
+  </div>
+
+  <div>
+    <p-button label="Cancelar" (click)="onCancel()"></p-button>
+    <button pButton type="submit" label="Guardar"></button>
+  </div>
+</form>

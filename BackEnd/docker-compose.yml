@@ -1,0 +1,6 @@
+services:
+  pruebatecnicaevoltis.api:
+    image: ${DOCKER_REGISTRY-}pruebatecnicaevoltisapi
+    build:
+      context: .
+      dockerfile: PruebaTecnicaEvoltis.Api/Dockerfile
